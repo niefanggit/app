@@ -5,7 +5,7 @@ import LineChart from './LineChart';
 import React, { useState, useEffect } from 'react';
 import { notification, Row, Col } from 'antd';
 
-const HOST = 'localhost' // "47.93.48.15" //
+const HOST = '182.92.223.34' // "47.93.48.15" //
 // const HOST = document.location.host.split(":")[0] // "47.93.48.15" //
 
 function App() {
