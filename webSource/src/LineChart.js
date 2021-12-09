@@ -14,7 +14,7 @@ const LineChart = ({ dataList, gameId }) => {
 	const showLineColor = (list) => {
 		let arr = []
 		if(list.length != 0) {
-			let colors = ['red','green','blue','yellow']
+			let colors = ['red','green','blue','black']
 			var start = 0
 			for (let index = 0; index < list.length ; index++) {
 				if(index === list.length-1  || list[index].quarter != list[start].quarter) {
@@ -26,32 +26,30 @@ const LineChart = ({ dataList, gameId }) => {
 			arr.push({lte: 100, color: "red"})
 			arr.push({gt: 100, lte: 200, color: "green"})
 			arr.push({gt: 200, lte: 300, color: "red"})
-			arr.push({gt: 300, color: "red"})
+			arr.push({gt: 300, color: "black"})
 		}
-		
-
-		// let cut = Math.ceil(list.length / 100)
-		// for (let index = 0; index < cut; index++) {
-		// 	if (index % 2 === 0) {
-		// 		if (index === 0) {
-		// 			arr.push({ lte: (index + 1) * 100, color: 'red' })
-		// 		} else {
-		// 			arr.push({ gt: index * 100, lte: (index + 1) * 100, color: 'red' })
-		// 		}
-		// 	} else {
-		// 		if(index === cut-1){
-		// 			arr.push({ gt: (index + 2) * 100, color: 'green' })
-		// 		}else{
-		// 			arr.push({ gt: index * 100, lte: (index + 1) * 100, color: 'green' })
-		// 		}
-		// 	}
-		// }
 		return arr
 	}
+
+	const getMinMax = (list) =>{
+		var max = 0
+		var min = 500
+		for (let index = 0; index < list.length ; index++) {
+			if(list[index].totalScore > max) {
+				max = list[index].totalScore;
+			} 
+			if(list[index].totalScore < min) {
+				min = list[index].totalScore;
+			}
+		}
+		return {min:Math.floor(min-(max-min)/5),max:Math.ceil(max+(max -min)/5)}
+	}
+
 
 
 	useEffect(() => {
 		if(dataList.length===0) return
+		let minMax = getMinMax(dataList)
 		const option = {
 			tooltip: {
 				trigger: 'axis',
@@ -64,9 +62,13 @@ const LineChart = ({ dataList, gameId }) => {
 				boundaryGap: false,
 				// prettier-ignore
 				data: dataList.map(item => moment(new Date(item.time)).format('h:mm:ss')),
+			
 			},
 			yAxis: {
 				type: 'value',
+				min: minMax.min,
+				max: minMax.max,
+				position: 'left'
 			},
 			visualMap: {
 				show: false,
@@ -77,7 +79,6 @@ const LineChart = ({ dataList, gameId }) => {
 				{
 					name: '总得分',
 					type: 'line',
-					smooth: true,
 					data: dataList.map(item => item.totalScore)
 				}
 			]
