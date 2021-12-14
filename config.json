@@ -1,6 +1,6 @@
 {
     "tokens": [
-        {"token": "92325-P57c4Kb1EHPTpF", "limitPerHour": 1800}
+        {"token": "92325-P57c4Kb1EHPTpF", "limitPerHour": 198999}
     ],
     "mongoHost": "localhost"
 }
