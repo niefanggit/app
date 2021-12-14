@@ -15,6 +15,7 @@ type RunEngine struct {
 }
 
 func (engine *RunEngine) startFetchGame(gameId string) {
+	log.Printf("startFetchGame gameId %s ", gameId)
 	result, err := engine.request.Request("https://api.b365api.com/v1/bet365/event", map[string]string{"FI": gameId})
 	if err != nil {
 		log.Printf("Request game: %v", err)
