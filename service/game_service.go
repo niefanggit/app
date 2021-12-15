@@ -69,6 +69,19 @@ func (service *GameService) GetGameByGameId(gameId string) []model.Game {
 		}
 		games = append(games, game)
 	}
-
-	return games
+	if len(games) == 0 {
+		return games
+	}
+	var filterGames []model.Game
+	for i, s := range games {
+		if i == 0 || i == len(games)-1 {
+			filterGames = append(filterGames, s)
+		} else {
+			var lastGameItem = filterGames[len(filterGames)-1]
+			if lastGameItem.TotalScore != s.TotalScore || lastGameItem.Quarter != s.Quarter || s.Time.UnixMilli()-lastGameItem.Time.UnixMilli() >= 1000*59+500 {
+				filterGames = append(filterGames, s)
+			}
+		}
+	}
+	return filterGames
 }

@@ -5,7 +5,8 @@ import LineChart from './LineChart';
 import React, { useState, useEffect } from 'react';
 import { notification, Row, Col } from 'antd';
 
-const HOST = '182.92.223.34' // "47.93.48.15" //
+//const HOST = '182.92.223.34' // "47.93.48.15" //
+const HOST = 'localhost' // "47.93.48.15" //
 // const HOST = document.location.host.split(":")[0] // "47.93.48.15" //
 
 function App() {
@@ -34,15 +35,15 @@ function App() {
         let gameId = game.gameId
         let res = await fetch(`http://${HOST}:8080/game/${gameId}`)
         let result = await res.json()
-        var filter = []
-        result.forEach((element,i)=> {
-            if(i === 0) {
-              filter.push(element)
-            } else if(filter[filter.length-1].totalScore != element.totalScore || filter[filter.length-1].quarter != element.quarter || new Date(element.time).getTime() -  new Date(filter[filter.length-1].time).getTime() >= 1000*59+500) {
-              filter.push(element)
-            }
-        });
-        curData[gameId] = filter
+        // var filter = []
+        // result.forEach((element,i)=> {
+        //     if(i === 0 || i === element.length-1) {
+        //       filter.push(element)
+        //     } else if(filter[filter.length-1].totalScore != element.totalScore || filter[filter.length-1].quarter != element.quarter || new Date(element.time).getTime() -  new Date(filter[filter.length-1].time).getTime() >= 1000*59+500) {
+        //       filter.push(element)
+        //     }
+        // });
+        curData[gameId] = result
       } catch(err) {
         // notification.open({
         //   message: '服务端错误',
